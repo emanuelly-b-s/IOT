@@ -1,21 +1,48 @@
-#include <WiFi.h>                                                 
+#include "dht.h"
+const int pinoDht = 22;
+dht DHT;
+
+#include "WiFi.h" 
+#include "FirebaseESP32.h"
+                                               
 #define WIFI_SSID "Vivo-Internet-BF17"
 #define WIFI_PASSWORD "78814222"
 
 
+#define FIREBASE_HOST "https://teste-esp-temp-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "CHrXmBPnAFIAZfwBcSLVszBYSv2QMBgmwTL23jQu"
+
+FirebaseData firebaseData;
+FirebaseJson json;
+
 void setup() {
-  Serial.begin(9600);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    Serial.print(".");
-    delay(300);
-  }
-  Serial.print("Connected with IP: ");
-  Serial.println(WiFi.localIP());
+  Serial.begin(9600);
+
+    while(Wifi.status() != WL_CONNECTED)
+    {
+      Serial.print(".");
+      delay(300);
+    }
+    Serial.print("Connected with IP: ");
+    Serial.println(WiFi.localIP());
+
+    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    Firebase.reconnectWiFi(true);
+    Firebase.setReadTimeout(firebaseData, 1000 * 60);
+    Firebase.setwriteSizeLimit(firebaseData, "tiny");
+  
+    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    
+    Firebase.reconnectWiFi(true);
+    Firebase.setReadTimeout(firebaseData, 1000 * 60);
+    Firebase.setwriteSizeLimit(firebaseData, "tiny");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  DHT.read11(pinoDht);
 
+  json.set("/temperatura", t);
+  json.set("/umidade", h);
+  Firebase.updateNode(firebaseData, "/<Emanuelly>/Sensor", json);
 }
