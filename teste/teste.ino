@@ -8,8 +8,8 @@ dht DHT;
 #include "WiFi.h" 
 #include "FirebaseESP32.h"
                                                
-#define WIFI_SSID "Iphone de Emanuelly"
-#define WIFI_PASSWORD "manuzika"
+#define WIFI_SSID "Vivo-Internet-BF17"
+#define WIFI_PASSWORD "78814222"
 
 
 #define FIREBASE_HOST "https://teste-esp-temp-default-rtdb.firebaseio.com/"
@@ -19,9 +19,9 @@ FirebaseData firebaseData;
 FirebaseJson json;
 
 void setup() {
+   DHT.read11(pinoDHT);
    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
    Serial.begin(9600);
-
     while(WiFi.status() != WL_CONNECTED)
     {
       Serial.print(".");
@@ -40,7 +40,7 @@ void setup() {
     Firebase.reconnectWiFi(true);
     Firebase.setReadTimeout(firebaseData, 1000 * 60);
     Firebase.setwriteSizeLimit(firebaseData, "tiny");
-  lcd.begin(16,2);
+    lcd.begin(16,2);
 }
 void loop() {
   DHT.read11(pinoDHT);
