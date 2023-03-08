@@ -74,7 +74,7 @@ void loop() {
   if (DHT.temperature <= 25) {
       digitalWrite(led1, HIGH);
   }
-  else if (DHT.temperature > 25 & DHT.temperature < 27) {
+  else if (DHT.temperature > 25 && DHT.temperature < 27) {
       digitalWrite(led2, HIGH);
   }
   else if (DHT.temperature >= 27) {
